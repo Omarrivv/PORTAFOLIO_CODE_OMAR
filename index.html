@@ -6,6 +6,7 @@
     <title>Mi Portafolio</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="/img/portadopor.png" type="image/x-icon">
 </head>
 <body>
     <nav class="navbar">
@@ -72,37 +73,65 @@
     <section class="about-section">
         <div class="book-card">
             <div class="book-page left-page">
-                <h2>Sobre Mí</h2>
-                <p>Soy un apasionado programador de la carrera de sistemas con experiencia en el desarrollo de soluciones tecnológicas innovadoras. 
-                    Me especializo en analizar modelos de negocio y 
-                    transformarlos en soluciones digitales efectivas. sistemas facil de uso para las perxonas que lo usaran como a los que administran</p>
-                <p>Mi enfoque se centra en:</p>
-                <ul>
-                    <li>🎯 Análisis de modelos de negocio</li>
-                    <li>💡 Desarrollo de soluciones personalizadas</li>
-                    <li>🚀 Optimización de procesos empresariales</li>
-                    <li>🔄 Implementación de tecnologías modernas</li>
-                </ul>
+                <div class="page-content">
+                    <h2>Sobre Mí <span class="expand-hint"><i class="fas fa-chevron-down expand-icon"></i> Click para ver más</span></h2>
+                    <div class="about-preview">
+                        <div class="profile-brief">
+                            <div class="profile-avatar">
+                                <img src="/img/portadopor.png" alt="Omar Rivera" class="avatar-img">
+                            </div>
+                            <div class="brief-info">
+                                <h3>Omar Felix Rivera Rosas</h3>
+                                <p class="role">Desarrollador Full Stack</p>
+                            </div>
+                        </div>
+                        <div class="skills-preview">
+                            <span class="skill-tag">🎯 Análisis</span>
+                            <span class="skill-tag">💡 Desarrollo</span>
+                            <span class="skill-tag">🚀 Optimización</span>
+                            <span class="skill-tag">🔄 Innovación</span>
+                        </div>
+                    </div>
+                    <div class="about-details">
+                        <p>Soy un apasionado programador de la carrera de sistemas con experiencia en el desarrollo de soluciones tecnológicas innovadoras.</p>
+                        <p>Me especializo en analizar modelos de negocio y transformarlos en soluciones digitales efectivas.</p>
+                        <div class="expertise-list">
+                            <h4>Mi enfoque se centra en:</h4>
+                            <ul>
+                                <li><span class="icon">🎯</span> Análisis de modelos de negocio</li>
+                                <li><span class="icon">💡</span> Desarrollo de soluciones personalizadas</li>
+                                <li><span class="icon">🚀</span> Optimización de procesos empresariales</li>
+                                <li><span class="icon">🔄</span> Implementación de tecnologías modernas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="book-page right-page">
-                <h2>Mis Redes</h2>
-                <div class="social-links">
-                    <a target="_blank" href="https://www.youtube.com/@codefxomarroma" class="social-link youtube">
-                        <i class="fab fa-youtube"></i>
-                        <span>YouTube</span>
-                    </a>
-                    <a target="_blank" href="https://www.tiktok.com/@omarrivera4318" class="social-link tiktok">
-                        <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
-                    </a>
-                    <a target="_blank" href="https://www.linkedin.com/in/omar-felix-rivera-rosas-149619274/" class="social-link linkedin">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a target="_blank" href="https://github.com/Omarrivv" class="social-link github">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
+                <div class="page-content">
+                    <h2>Mis Redes <i class="fas fa-share-alt"></i></h2>
+                    <div class="social-links">
+                        <a target="_blank" href="https://www.youtube.com/@codefxomarroma" class="social-link youtube">
+                            <i class="fab fa-youtube"></i>
+                            <span>YouTube</span>
+                            <small>Tutoriales y contenido tech</small>
+                        </a>
+                        <a target="_blank" href="https://www.tiktok.com/@omarrivera4318" class="social-link tiktok">
+                            <i class="fab fa-tiktok"></i>
+                            <span>TikTok</span>
+                            <small>Tips y trucos de programación</small>
+                        </a>
+                        <a target="_blank" href="https://www.linkedin.com/in/omar-felix-rivera-rosas-149619274/" class="social-link linkedin">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                            <small>Perfil profesional</small>
+                        </a>
+                        <a target="_blank" href="https://github.com/Omarrivv" class="social-link github">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                            <small>Proyectos y código</small>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,19 +202,19 @@
             </div>
             <div class="skill-box">
                 <div class="skill-content">
-                    <i class="fas fa-database"></i>
+                    <i class="fas fa-database oracle-color"></i>
                     <span>Oracle</span>
                 </div>
             </div>
             <div class="skill-box">
                 <div class="skill-content">
-                    <i class="fas fa-database"></i>
+                    <i class="fas fa-database sqlserver-color"></i>
                     <span>SQL Server</span>
                 </div>
             </div>
             <div class="skill-box">
                 <div class="skill-content">
-                    <i class="fas fa-database"></i>
+                    <i class="fas fa-database mysql-color"></i>
                     <span>MySQL</span>
                 </div>
             </div>
@@ -199,6 +228,12 @@
                 <div class="skill-content">
                     <i class="fab fa-figma"></i>
                     <span>Figma</span>
+                </div>
+            </div>
+            <div class="skill-box">
+                <div class="skill-content">
+                    <i class="fas fa-code google-apps-color"></i>
+                    <span>Google Apps Script</span>
                 </div>
             </div>
         </div>

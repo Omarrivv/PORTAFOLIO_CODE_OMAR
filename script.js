@@ -128,7 +128,13 @@ function createProjectCard(proyecto) {
     
     card.innerHTML = `
         <div class="project-content">
-            <img src="img/proyectos/${proyecto.imagen}" alt="${proyecto.titulo}" loading="lazy">
+            <div class="project-image-container">
+                <img src="img/proyectos/${proyecto.imagen}" alt="${proyecto.titulo}" loading="lazy" class="project-image">
+                <div class="image-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Click para ampliar</span>
+                </div>
+            </div>
             <span class="project-date">${proyecto.fecha}</span>
             <div class="project-info">
                 <div>
@@ -138,7 +144,13 @@ function createProjectCard(proyecto) {
                     <p class="project-creator">${proyecto.creadores}</p>
                     <hr>
                     <p>Proceso de desarrollo:</p>
-                    <img src="img/proyectos/${proyecto.proceso_automatizacion}" alt="Proceso" class="process-image">
+                    <div class="project-image-container">
+                        <img src="img/proyectos/${proyecto.proceso_automatizacion}" alt="Proceso" class="process-image">
+                        <div class="image-overlay">
+                            <i class="fas fa-search-plus"></i>
+                            <span>Click para ampliar</span>
+                        </div>
+                    </div>
                     <div class="tecnologias-container">
                         ${getTecnologias(proyecto.tecnologias)}
                     </div>
@@ -158,8 +170,78 @@ function createProjectCard(proyecto) {
             </div>
         </div>
     `;
+
+    // Asegurar que el evento de clic esté correctamente configurado
+    const images = card.querySelectorAll('.project-image-container img');
+    images.forEach(img => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que el evento se propague
+            createLightbox(img.src, img.alt);
+        });
+    });
     
     return card;
+}
+
+function createLightbox(imgSrc, imgAlt) {
+    // Remover lightbox existente si hay alguno
+    const existingLightbox = document.querySelector('.lightbox');
+    if (existingLightbox) {
+        document.body.removeChild(existingLightbox);
+    }
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    
+    const content = `
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="${imgSrc}" alt="${imgAlt}" />
+        </div>
+    `;
+    
+    lightbox.innerHTML = content;
+    document.body.appendChild(lightbox);
+
+    // Forzar un reflow antes de añadir la clase show
+    lightbox.offsetHeight;
+    
+    // Mostrar el lightbox
+    requestAnimationFrame(() => {
+        lightbox.classList.add('show');
+    });
+
+    // Eventos del lightbox
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    
+    const closeLightbox = () => {
+        lightbox.classList.add('fade-out');
+        setTimeout(() => {
+            if (lightbox.parentElement) {
+                document.body.removeChild(lightbox);
+            }
+        }, 300);
+    };
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', function closeOnEsc(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            document.removeEventListener('keydown', closeOnEsc);
+        }
+    });
 }
 
 /**
@@ -223,29 +305,43 @@ function animateCount(element, start, end, duration, addPlus = false) {
     }, stepTime);
 }
 
-/**
- * Carga los proyectos en el contenedor con animación
- * Filtra proyectos duplicados y agrega delays para la animación
- */
+// Función para cargar los proyectos
 function loadProjects() {
-    // Limpiar el contenedor primero
+    const proyectosContainer = document.getElementById('proyectosContainer');
+    if (!proyectosContainer) return;
+
+    // Limpiar el contenedor
     proyectosContainer.innerHTML = '';
     
-    // Filtrar proyectos duplicados por título
-    const uniqueProjects = proyectos.filter((proyecto, index, self) =>
-        index === self.findIndex((p) => p.titulo === proyecto.titulo)
-    );
-
-    // Cargar proyectos únicos con animación
-    uniqueProjects.forEach((proyecto, index) => {
+    proyectos.forEach((proyecto, index) => {
         const card = createProjectCard(proyecto);
         card.style.animationDelay = `${index * 0.2}s`;
         proyectosContainer.appendChild(card);
     });
+
+    // Agregar eventos de lightbox después de cargar las tarjetas
+    initializeLightboxEvents();
 }
 
-// Cargar proyectos cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', loadProjects);
+// Función para inicializar eventos del lightbox
+function initializeLightboxEvents() {
+    const projectImages = document.querySelectorAll('.project-image-container img');
+    projectImages.forEach(img => {
+        const container = img.closest('.project-image-container');
+        
+        // Remover eventos anteriores si existen
+        container.removeEventListener('click', handleImageClick);
+        container.addEventListener('click', handleImageClick);
+    });
+}
+
+// Manejador de eventos para el clic en imágenes
+function handleImageClick(e) {
+    const img = e.currentTarget.querySelector('img');
+    if (!img) return;
+    
+    createLightbox(img.src, img.alt);
+}
 
 // Animación al hacer scroll
 function handleIntersection(entries, observer) {
@@ -409,12 +505,13 @@ const commands = {
             return `
                 <div class="terminal-help">
                     <dt>help</dt><dd>Muestra esta lista de comandos</dd>
-                    <dt>clear</dt><dd>Limpia la terminal</dd>
+                    <dt>clear</dt><dd>Limpia la terminal y la oculta</dd>
                     <dt>skills</dt><dd>Muestra mis habilidades técnicas</dd>
                     <dt>projects</dt><dd>Lista mis proyectos</dd>
                     <dt>contact</dt><dd>Muestra mi información de contacto</dd>
                     <dt>about</dt><dd>Información sobre mí</dd>
                     <dt>social</dt><dd>Mis redes sociales</dd>
+                    <dt>exit</dt><dd>Cierra la terminal</dd>
                 </div>
             `;
         }
@@ -422,8 +519,24 @@ const commands = {
     clear: {
         description: 'Limpia la terminal',
         execute: () => {
-            terminalOutput.innerHTML = '';
+            terminalOutput.innerHTML = `
+                <p class="info">¡Terminal limpiada! 🧹</p>
+                <p class="info">Escribe 'help' para ver los comandos disponibles</p>
+            `;
             return '';
+        }
+    },
+    exit: {
+        description: 'Cierra la terminal',
+        execute: () => {
+            setTimeout(() => {
+                const terminalSection = document.querySelector('.terminal-section');
+                terminalSection.style.opacity = '0';
+                setTimeout(() => {
+                    terminalSection.style.display = 'none';
+                }, 300);
+            }, 1000);
+            return '<p class="info">¡Hasta luego! Cerrando terminal...</p>';
         }
     },
     skills: {
@@ -512,21 +625,32 @@ terminalInput.addEventListener('keydown', (e) => {
             historyIndex = commandHistory.length;
         }
 
-        // Mostrar el comando ingresado
-        terminalOutput.innerHTML += `
-            <p class="terminal-command">
-                <span class="terminal-prompt">omar@portfolio:~$</span> ${command}
-            </p>
-        `;
+        // Mostrar el comando ingresado con efecto de typing
+        const commandElement = document.createElement('p');
+        commandElement.className = 'terminal-command';
+        commandElement.innerHTML = `<span class="terminal-prompt">omar@portfolio:~$</span> ${command}`;
+        terminalOutput.appendChild(commandElement);
 
         // Ejecutar el comando
         if (command in commands) {
-            terminalOutput.innerHTML += commands[command].execute();
+            const output = commands[command].execute();
+            const outputElement = document.createElement('div');
+            outputElement.innerHTML = output;
+            outputElement.style.opacity = '0';
+            terminalOutput.appendChild(outputElement);
+            
+            // Añadir efecto de fade in al output
+            setTimeout(() => {
+                outputElement.style.transition = 'opacity 0.3s ease';
+                outputElement.style.opacity = '1';
+            }, 50);
         } else if (command) {
-            terminalOutput.innerHTML += `
-                <p class="error">Command not found: ${command}</p>
+            const errorElement = document.createElement('div');
+            errorElement.innerHTML = `
+                <p class="error">Comando no encontrado: ${command}</p>
                 <p class="info">Escribe 'help' para ver los comandos disponibles</p>
             `;
+            terminalOutput.appendChild(errorElement);
         }
 
         // Limpiar input y scroll al final
@@ -546,6 +670,20 @@ terminalInput.addEventListener('keydown', (e) => {
         } else {
             historyIndex = commandHistory.length;
             terminalInput.value = '';
+        }
+    } else if (e.key === 'Tab') {
+        e.preventDefault();
+        const input = terminalInput.value.trim().toLowerCase();
+        const possibilities = Object.keys(commands).filter(cmd => cmd.startsWith(input));
+        
+        if (possibilities.length === 1) {
+            terminalInput.value = possibilities[0];
+        } else if (possibilities.length > 1) {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.className = 'terminal-suggestions';
+            suggestionElement.innerHTML = `<p class="info">Comandos disponibles: ${possibilities.join(', ')}</p>`;
+            terminalOutput.appendChild(suggestionElement);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
         }
     }
 });
@@ -568,6 +706,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalSection = document.querySelector('.terminal-section');
     let hasInteracted = false;
 
+    // Crear botón de scroll
+    const scrollButton = document.createElement('div');
+    scrollButton.className = 'terminal-scroll-hint';
+    scrollButton.innerHTML = `
+        <div class="scroll-content">
+            <i class="fas fa-mouse"></i>
+            <span>Desplázate hacia abajo para ver más contenido</span>
+            <div class="scroll-icon">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    `;
+    terminalSection.appendChild(scrollButton);
+
     // Mostrar terminal al inicio
     terminalSection.style.display = 'flex';
 
@@ -577,27 +729,66 @@ document.addEventListener('DOMContentLoaded', () => {
             terminalSection.style.opacity = '0';
             setTimeout(() => {
                 terminalSection.style.display = 'none';
-            }, 300); // Esperar a que termine la transición
+            }, 300);
             hasInteracted = true;
         }
     }
 
     // Ocultar terminal al hacer scroll
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) { // Ajusta este valor según necesites
+        if (window.scrollY > 100) {
             hideTerminal();
         }
     });
+
+    // Ocultar terminal al hacer clic en el botón de scroll
+    scrollButton.addEventListener('click', hideTerminal);
 
     // Ocultar terminal al hacer clic en enlaces de navegación
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', hideTerminal);
     });
 
-    // Ocultar terminal al hacer clic fuera de ella
-    document.addEventListener('click', (e) => {
-        if (!terminalSection.contains(e.target) && !hasInteracted) {
-            hideTerminal();
+    // Mostrar/ocultar botón de scroll según la posición
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            scrollButton.style.opacity = '0';
+        } else {
+            scrollButton.style.opacity = '1';
         }
+    });
+});
+
+// Funcionalidad para la sección About
+document.addEventListener('DOMContentLoaded', () => {
+    const aboutPage = document.querySelector('.book-page.left-page');
+    const expandIcon = aboutPage.querySelector('.expand-icon');
+
+    if (expandIcon) {
+        expandIcon.addEventListener('click', () => {
+            aboutPage.classList.toggle('expanded');
+            
+            // Animación suave al expandir/contraer
+            const details = aboutPage.querySelector('.about-details');
+            if (aboutPage.classList.contains('expanded')) {
+                details.style.maxHeight = details.scrollHeight + 'px';
+            } else {
+                details.style.maxHeight = '0';
+            }
+        });
+    }
+
+    // Efecto hover en las redes sociales
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            const icon = link.querySelector('i');
+            icon.style.transform = 'scale(1.2) rotate(360deg)';
+        });
+
+        link.addEventListener('mouseleave', () => {
+            const icon = link.querySelector('i');
+            icon.style.transform = 'scale(1) rotate(0)';
+        });
     });
 });
