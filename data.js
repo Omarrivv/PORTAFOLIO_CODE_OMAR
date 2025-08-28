@@ -113,7 +113,7 @@ const proyectos = [
     titulo: " Sistema de Gestión de Productos",
     descripcion: "Gestiona tus productos, costos y ganancias de manera eficiente",
     creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://encomerseomarcode.netlify.app/",
+    link: "https://web-enterprisess.netlify.app/",
     proceso_automatizacion: "gestion_productos.png",
     fecha: "27/08/2025",
     imagen: "gestion_productos.png",
@@ -159,4 +159,4 @@ const informacionPersonal = {
     ["instagram", "https://www.youtube.com/@codefxomarroma"],
     ["facebook", "https://www.facebook.com/omarfelix.riverarosas/"],
   ]
-}; 
+};
