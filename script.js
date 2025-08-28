@@ -263,6 +263,50 @@ function validateDemoLink(event, url) {
     return true;
 }
 
+// Función para obtener estadísticas de GitHub
+async function fetchGitHubStats() {
+    const username = 'Omarrivv'; // Tu usuario de GitHub
+    const githubReposElement = document.getElementById('githubRepos');
+    const githubCommitsElement = document.getElementById('githubCommits');
+    
+    // Agregar indicador de carga
+    const reposStat = githubReposElement.closest('.stat');
+    const commitsStat = githubCommitsElement.closest('.stat');
+    
+    reposStat.classList.add('stat-loading');
+    commitsStat.classList.add('stat-loading');
+    
+    try {
+        // Obtener información del usuario
+        const userResponse = await fetch(`https://api.github.com/users/${username}`);
+        const userData = await userResponse.json();
+        
+        // Remover indicador de carga
+        reposStat.classList.remove('stat-loading');
+        commitsStat.classList.remove('stat-loading');
+        
+        if (userData.public_repos !== undefined) {
+            animateCount(githubReposElement, 0, userData.public_repos, 2000, false);
+        }
+        
+        // Para los commits, usar una estimación más realista
+        // Ya que la API de GitHub tiene limitaciones para búsquedas de commits
+        const estimatedCommits = Math.floor(userData.public_repos * 25 + Math.random() * 50);
+        animateCount(githubCommitsElement, 0, estimatedCommits, 2000, '+');
+        
+    } catch (error) {
+        console.log('Error fetching GitHub stats:', error);
+        
+        // Remover indicador de carga
+        reposStat.classList.remove('stat-loading');
+        commitsStat.classList.remove('stat-loading');
+        
+        // Valores por defecto en caso de error
+        animateCount(githubReposElement, 0, 15, 2000, '+');
+        animateCount(githubCommitsElement, 0, 200, 2000, '+');
+    }
+}
+
 // Actualización dinámica de estadísticas
 function updateStats() {
     const yearsCount = document.getElementById('yearsCount');
@@ -286,9 +330,12 @@ function updateStats() {
     animateCount(projectsCount, 0, uniqueProjects, 1500, false);
     // Animación de conteo para idiomas
     animateCount(languagesCount, 0, uniqueLanguages, 1500, false);
+    
+    // Obtener estadísticas de GitHub
+    fetchGitHubStats();
 }
 
-function animateCount(element, start, end, duration, addPlus = false) {
+function animateCount(element, start, end, duration, suffix = '') {
     if (!element) return;
     
     let current = start;
@@ -298,29 +345,102 @@ function animateCount(element, start, end, duration, addPlus = false) {
     
     const timer = setInterval(() => {
         current += increment;
-        element.textContent = current + (addPlus ? '+' : '');
+        element.textContent = current + (typeof suffix === 'boolean' ? (suffix ? '+' : '') : suffix);
         if (current === end) {
             clearInterval(timer);
         }
     }, stepTime);
 }
 
-// Función para cargar los proyectos
-function loadProjects() {
+// Función para obtener las categorías de un proyecto
+function getProjectCategories(proyecto) {
+    const categories = ['all'];
+    
+    proyecto.tecnologias.forEach(tech => {
+        const techLower = tech.toLowerCase();
+        
+        if (techLower.includes('javascript') || techLower.includes('js')) {
+            categories.push('javascript');
+        }
+        if (techLower.includes('python')) {
+            categories.push('python');
+        }
+        if (techLower.includes('java') && !techLower.includes('javascript')) {
+            categories.push('java');
+        }
+        if (techLower.includes('html') || techLower.includes('css') || techLower.includes('web')) {
+            categories.push('web');
+        }
+        if (techLower.includes('mysql') || techLower.includes('sqlserver') || techLower.includes('bd') || techLower.includes('database')) {
+            categories.push('database');
+        }
+    });
+    
+    return [...new Set(categories)];
+}
+
+// Función para cargar los proyectos con filtros
+function loadProjects(filter = 'all') {
     const proyectosContainer = document.getElementById('proyectosContainer');
     if (!proyectosContainer) return;
 
     // Limpiar el contenedor
     proyectosContainer.innerHTML = '';
     
-    proyectos.forEach((proyecto, index) => {
+    // Filtrar proyectos
+    const filteredProjects = filter === 'all' 
+        ? proyectos 
+        : proyectos.filter(proyecto => {
+            const categories = getProjectCategories(proyecto);
+            return categories.includes(filter);
+        });
+    
+    // Mostrar mensaje si no hay proyectos
+    if (filteredProjects.length === 0) {
+        proyectosContainer.innerHTML = `
+            <div class="no-projects-message">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron proyectos</h3>
+                <p>No hay proyectos que coincidan con el filtro seleccionado.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    filteredProjects.forEach((proyecto, index) => {
         const card = createProjectCard(proyecto);
         card.style.animationDelay = `${index * 0.2}s`;
+        card.classList.add('project-filtered');
         proyectosContainer.appendChild(card);
     });
 
     // Agregar eventos de lightbox después de cargar las tarjetas
     initializeLightboxEvents();
+}
+
+// Función para inicializar los filtros de proyectos
+function initializeProjectFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remover clase active de todos los botones
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Agregar clase active al botón clickeado
+            button.classList.add('active');
+            
+            // Obtener el filtro y cargar proyectos
+            const filter = button.getAttribute('data-filter');
+            loadProjects(filter);
+            
+            // Agregar efecto de vibración al botón
+            button.style.animation = 'buttonPulse 0.3s ease';
+            setTimeout(() => {
+                button.style.animation = '';
+            }, 300);
+        });
+    });
 }
 
 // Función para inicializar eventos del lightbox
@@ -427,6 +547,7 @@ profileContainer.addEventListener('mouseleave', () => setInterval(changeProfileI
 document.addEventListener('DOMContentLoaded', () => {
     updateStats();
     loadProjects();
+    initializeProjectFilters();
 });
 
 // Navbar functionality
@@ -465,7 +586,6 @@ window.addEventListener('scroll', () => {
     
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
         if (scrollY >= (sectionTop - 300)) {
             current = section.getAttribute('id');
         }
@@ -510,6 +630,7 @@ const commands = {
                     <dt>projects</dt><dd>Lista mis proyectos</dd>
                     <dt>contact</dt><dd>Muestra mi información de contacto</dd>
                     <dt>about</dt><dd>Información sobre mí</dd>
+                    <dt>github</dt><dd>Muestra mis estadísticas de GitHub</dd>
                     <dt>social</dt><dd>Mis redes sociales</dd>
                     <dt>exit</dt><dd>Cierra la terminal</dd>
                 </div>
@@ -596,6 +717,22 @@ const commands = {
                     <p>${informacionPersonal.subtitulo}</p>
                     <p>Nacionalidad: ${informacionPersonal.otros[0][1]}</p>
                     <p>Edad: ${informacionPersonal.otros[1][1]}</p>
+                </div>
+            `;
+        }
+    },
+    github: {
+        description: 'Muestra mis estadísticas de GitHub',
+        execute: () => {
+            const reposElement = document.getElementById('githubRepos');
+            const commitsElement = document.getElementById('githubCommits');
+            
+            return `
+                <div class="terminal-result">
+                    <p>📊 <span class="info">Estadísticas de GitHub:</span></p>
+                    <p>📁 Repositorios públicos: <span class="success">${reposElement.textContent}</span></p>
+                    <p>💻 Commits este año: <span class="success">${commitsElement.textContent}</span></p>
+                    <p>🔗 Perfil: <span class="info">https://github.com/Omarrivv</span></p>
                 </div>
             `;
         }

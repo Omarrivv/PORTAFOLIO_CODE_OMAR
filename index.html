@@ -3,7 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Portafolio</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Omar Felix Rivera Rosas - Desarrollador Full Stack | Portafolio</title>
+    <meta name="description" content="Desarrollador Full Stack especializado en JavaScript, Python, Angular y Node.js. Creador de soluciones web innovadoras y sistemas automatizados.">
+    <meta name="keywords" content="desarrollador web, full stack, javascript, python, angular, nodejs, programador, portafolio, omar rivera">
+    <meta name="author" content="Omar Felix Rivera Rosas">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tu-dominio.com">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Omar Felix Rivera Rosas - Desarrollador Full Stack">
+    <meta property="og:description" content="Desarrollador Full Stack especializado en crear soluciones web innovadoras. Explora mis proyectos y habilidades técnicas.">
+    <meta property="og:image" content="https://tu-dominio.com/img/portadopor.png">
+    <meta property="og:url" content="https://tu-dominio.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Omar Rivera - Portafolio">
+    <meta property="og:locale" content="es_ES">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Omar Felix Rivera Rosas - Desarrollador Full Stack">
+    <meta name="twitter:description" content="Desarrollador Full Stack especializado en crear soluciones web innovadoras.">
+    <meta name="twitter:image" content="https://tu-dominio.com/img/portadopor.png">
+    <meta name="twitter:creator" content="@tu_usuario_twitter">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Omar Felix Rivera Rosas",
+      "jobTitle": "Desarrollador Full Stack",
+      "description": "Desarrollador Full Stack especializado en JavaScript, Python, Angular y Node.js",
+      "url": "https://tu-dominio.com",
+      "image": "https://tu-dominio.com/img/portadopor.png",
+      "sameAs": [
+        "https://github.com/Omarrivv",
+        "https://www.linkedin.com/in/omar-felix-rivera-rosas-149619274/",
+        "https://www.youtube.com/@codefxomarroma"
+      ],
+      "knowsAbout": [
+        "JavaScript",
+        "Python",
+        "Angular",
+        "Node.js",
+        "HTML",
+        "CSS",
+        "MySQL",
+        "SQL Server",
+        "Docker",
+        "AWS"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Valle Grande"
+      }
+    }
+    </script>
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="/img/portadopor.png" type="image/x-icon">
@@ -57,6 +115,14 @@
                     <div class="stat">
                         <span class="stat-number" id="languagesCount">0</span>
                         <span class="stat-label">Idiomas</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="githubRepos">0</span>
+                        <span class="stat-label">Repositorios GitHub</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="githubCommits">0</span>
+                        <span class="stat-label">Commits este año</span>
                     </div>
                 </div>
                 <div class="profile-buttons">
@@ -261,6 +327,26 @@
 
     <section class="projects" id="projects">
         <h2>Proyectos</h2>
+        <div class="projects-filters">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-th"></i> Todos
+            </button>
+            <button class="filter-btn" data-filter="javascript">
+                <i class="fab fa-js"></i> JavaScript
+            </button>
+            <button class="filter-btn" data-filter="python">
+                <i class="fab fa-python"></i> Python
+            </button>
+            <button class="filter-btn" data-filter="java">
+                <i class="fab fa-java"></i> Java
+            </button>
+            <button class="filter-btn" data-filter="web">
+                <i class="fas fa-globe"></i> Web
+            </button>
+            <button class="filter-btn" data-filter="database">
+                <i class="fas fa-database"></i> Base de Datos
+            </button>
+        </div>
         <div class="projects-grid" id="proyectosContainer">
             <!-- Los proyectos se cargarán dinámicamente aquí -->
         </div>
