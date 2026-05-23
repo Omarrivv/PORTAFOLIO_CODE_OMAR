@@ -143,14 +143,7 @@ function createProjectCard(proyecto) {
                     <hr>
                     <p class="project-creator">${proyecto.creadores}</p>
                     <hr>
-                    <p>Proceso de desarrollo:</p>
-                    <div class="project-image-container">
-                        <img src="img/proyectos/${proyecto.proceso_automatizacion}" alt="Proceso" class="process-image">
-                        <div class="image-overlay">
-                            <i class="fas fa-search-plus"></i>
-                            <span>Click para ampliar</span>
-                        </div>
-                    </div>
+                    <!-- Proceso de desarrollo eliminado para reducir relleno visual -->
                     <div class="tecnologias-container">
                         ${getTecnologias(proyecto.tecnologias)}
                     </div>
@@ -171,7 +164,7 @@ function createProjectCard(proyecto) {
         </div>
     `;
 
-    // Asegurar que el evento de clic esté correctamente configurado
+    // Asegurar que el evento de clic esté correctamente configurado para las imágenes
     const images = card.querySelectorAll('.project-image-container img');
     images.forEach(img => {
         img.addEventListener('click', (e) => {
@@ -179,6 +172,8 @@ function createProjectCard(proyecto) {
             createLightbox(img.src, img.alt);
         });
     });
+
+    // Proceso de desarrollo eliminado — no se agrega botón ni su listener
     
     return card;
 }
@@ -484,7 +479,7 @@ document.querySelectorAll('.project-card').forEach(card => {
 
 // Carrusel de imágenes de perfil
 const profileImages = [
-    'portadopor.png',
+    'imagen-omar.jpg',
     'imagen-omar.jpg'
 ];
 
@@ -617,6 +612,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const terminalInput = document.querySelector('.terminal-input');
 const terminalOutput = document.querySelector('.terminal-output');
 const terminalBody = document.querySelector('.terminal-body');
+
+// Si la terminal fue removida del DOM, evitar inicializar su lógica
+if (terminalInput && terminalOutput && terminalBody) {
 
 const commands = {
     help: {
@@ -896,23 +894,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+}
+
 // Funcionalidad para la sección About
 document.addEventListener('DOMContentLoaded', () => {
     const aboutPage = document.querySelector('.book-page.left-page');
-    const expandIcon = aboutPage.querySelector('.expand-icon');
 
-    if (expandIcon) {
-        expandIcon.addEventListener('click', () => {
-            aboutPage.classList.toggle('expanded');
-            
-            // Animación suave al expandir/contraer
-            const details = aboutPage.querySelector('.about-details');
-            if (aboutPage.classList.contains('expanded')) {
-                details.style.maxHeight = details.scrollHeight + 'px';
-            } else {
-                details.style.maxHeight = '0';
-            }
-        });
+    // Asegurarse de que existe la sección antes de añadir manejadores
+    if (aboutPage) {
+        // Escuchar el clic en el contenedor completo (.expand-hint) para cubrir
+        // tanto el icono como el texto "Click para ver más".
+        const expandHint = aboutPage.querySelector('.expand-hint') || aboutPage.querySelector('.expand-icon');
+
+        if (expandHint) {
+            // Hacer accesible con teclado
+            expandHint.tabIndex = 0;
+
+            const toggleAbout = () => {
+                aboutPage.classList.toggle('expanded');
+                const details = aboutPage.querySelector('.about-details');
+                if (details) {
+                    if (aboutPage.classList.contains('expanded')) {
+                        details.style.maxHeight = details.scrollHeight + 'px';
+                    } else {
+                        details.style.maxHeight = '0';
+                    }
+                }
+            };
+
+            expandHint.addEventListener('click', toggleAbout);
+            expandHint.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleAbout();
+                }
+            });
+        }
     }
 
     // Efecto hover en las redes sociales

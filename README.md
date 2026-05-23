@@ -1,7 +1,7 @@
 # Portafolio de Omar Felix Rivera Rosas 🚀
 
 <div align="center">
-  <img src="img/portadopor.png" alt="Logo Portafolio" width="200">
+  <img src="img/imagen-omar.jpg" alt="Logo Portafolio" width="200">
   <h3>Desarrollador Backend y Frontend</h3>
 </div>
 

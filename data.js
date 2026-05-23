@@ -1,14 +1,5 @@
 const proyectos = [
-  {
-    titulo: "Pagina Web Centro de Varones",
-    descripcion: "Esta Pagina Web Fue Creada para Centro De Varones Para Tener Mas Informados A Los Padres De Familia Como Tambien Podemos Tener de Alumnos",
-    creadores: "esta web se trabajo primero en 4 personas luego este se a reducido hasta que solo fui el unico que lo acabo",
-    link: "https://www.youtube.com/watch?v=-IK4olKRqZY&t=18s",
-    proceso_automatizacion: "web_youtube_pagina.png",
-    fecha: "01/12/2023",
-    imagen: "web_youtube_pagina.png",
-    tecnologias: ["Javascript", "HTML", "CSS", "BD (MYSQL)", "Express", "NodeJS"],
-  },
+  
   {
     titulo: "Reserva de Citas Para MachaBarberShop",
     descripcion: "Fue Un sistema para administrar todo el procedimiento que hace barberia venta ,pagos a barberos , etc",
@@ -19,16 +10,7 @@ const proyectos = [
     imagen: "citas.png",
     tecnologias: ["Javascript", "HTML", "CSS", "BD (SQLSERVER)", "JAVA(JAKARTA)", "DOCKER"],
   },
-  {
-    titulo: "Juego De Mini Micraft",
-    descripcion: "Fue A Base De Un tutorial Que Me Pude Ver en Youtube",
-    creadores: "bueno el credito yo le daria al video de youtube que mire yo despues solo quise agregarles un poco mas pero es un interesante proyecto",
-    link: "https://github.com/Omarrivv/juegoMiniMicraft.git",
-    proceso_automatizacion: "pythonminicraft.png",
-    fecha: "01/06/2023",
-    imagen: "fondo-python.png",
-    tecnologias: ["Python", "Librerias de Python"],
-  },
+  
   {
     titulo: "Automatización de Envíos por Email usando Google Apps Script",
     descripcion: "En este video, te sumergirás en el fascinante mundo de la automatización con Google Apps Script. Descubre cómo puedes simplificar tareas repetitivas y ahorrar tiempo utilizando la potencia de la automatización.",
@@ -39,16 +21,7 @@ const proyectos = [
     imagen: "image.png",
     tecnologias: ["Google Apps Script", "Sheets", "Forms"],
   },
-  {
-    titulo: "Escraedor de videos de Youtube",
-    descripcion: "Este es un escraedor educativo con librerias de python (pytube) ...",
-    creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://youtu.be/-b_KbTlfR8k?si=n23Jhv9C-gXPn2GH",
-    proceso_automatizacion: "you-extraedorvideos.png",
-    fecha: "02/02/2024",
-    imagen: "you-extraedorvideos.png",
-    tecnologias: ["python", "Flask", "librerias de Python"],
-  },
+  
   {
     titulo: "Aprende Contabilidad Básica",
     descripcion: "Domina los conceptos fundamentales de la ecuación contable",
@@ -59,16 +32,7 @@ const proyectos = [
     imagen: "contabilidad.png",
     tecnologias: ["HTML", "CSS", "JAVASCRIPT"],
   },
-  {
-    titulo: "🛒 CryptoStore",
-    descripcion: "Compra productos exclusivos con Ethereum (Metamask Red de Prueba)",
-    creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://etherium-v1.netlify.app/",
-    proceso_automatizacion: "crypto.png",
-    fecha: "27/08/2025",
-    imagen: "crypto.png",
-    tecnologias: ["HTML", "CSS", "JAVASCRIPT"],
-  },
+  
   {
     titulo: "alquiler-espacios",
     descripcion: "Encuentra el espacio perfecto para tu evento Alquila salas de reuniones, oficinas, salones de eventos y más. Reserva fácilmente y paga de forma segura.",
@@ -99,16 +63,7 @@ const proyectos = [
     imagen: "machashop.png",
     tecnologias: ["HTML", "CSS", "JAVASCRIPT"],
   },
-  {
-    titulo: "Encomerce Demo Tienda Propia",
-    descripcion: "Sitio Web Compra de Productos Demo",
-    creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://encomerseomarcode.netlify.app/",
-    proceso_automatizacion: "encomerce.png",
-    fecha: "27/08/2025",
-    imagen: "encomerce.png",
-    tecnologias: ["ANGULAR"],
-  },
+  
   {
     titulo: " Sistema de Gestión de Productos",
     descripcion: "Gestiona tus productos, costos y ganancias de manera eficiente",
@@ -124,7 +79,7 @@ const proyectos = [
 const informacionPersonal = {
   nombre: "Omar Felix Rivera Rosas",
   subtitulo: "Desarrollador Backend Y Frontend 🤖➡️⬆️",
-  imagen: "/img/portadopor.png",
+  imagen: "/img/imagen-omar.jpg",
   otros: [
     ["Nacionalidad", "Peruano"],
     [
