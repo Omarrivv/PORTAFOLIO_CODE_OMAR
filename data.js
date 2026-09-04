@@ -23,17 +23,6 @@ const proyectos = [
   },
   
   {
-    titulo: "Aprende Contabilidad Básica",
-    descripcion: "Domina los conceptos fundamentales de la ecuación contable",
-    creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://contabilidadv1.netlify.app/",
-    proceso_automatizacion: "contabilidad.png",
-    fecha: "27/08/2025",
-    imagen: "contabilidad.png",
-    tecnologias: ["HTML", "CSS", "JAVASCRIPT"],
-  },
-  
-  {
     titulo: "alquiler-espacios",
     descripcion: "Encuentra el espacio perfecto para tu evento Alquila salas de reuniones, oficinas, salones de eventos y más. Reserva fácilmente y paga de forma segura.",
     creadores: "OMAR FELIX RIVERA ROSAS",
@@ -42,16 +31,6 @@ const proyectos = [
     fecha: "27/08/2025",
     imagen: "alquiler_espacios.png",
     tecnologias: ["HTML", "CSS", "JAVASCRIPT","NODEJS","RENDER PLATAFORMA BACKEND"],
-  },
-  {
-    titulo: "Manejador de Operaciones personales",
-    descripcion: "Maneja tus operaciones personales gastos ingresos metas de ahorro",
-    creadores: "OMAR FELIX RIVERA ROSAS",
-    link: "https://operaciones-personales.netlify.app/",
-    proceso_automatizacion: "operaciones_personales.png",
-    fecha: "27/08/2025",
-    imagen: "operaciones_personales.png",
-    tecnologias: ["HTML", "CSS", "JAVASCRIPT","NODEJS"],
   },
   {
     titulo: "Sitio Web Macha Barbershop",
